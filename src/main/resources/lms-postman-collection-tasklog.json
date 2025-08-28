@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "LMS Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar todos os estudantes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/students",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "students"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Criar TaskLog",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"studentId\": 1,\n  \"courseId\": 2,\n  \"categoryId\": 1,\n  \"timestamp\": \"2025-08-28T14:30:00\",\n  \"description\": \"Assisti uma videoaula sobre Java\",\n  \"minutesSpent\": 60\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/task-logs",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "task-logs"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Atualizar TaskLog",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryId\": 2,\n  \"timestamp\": \"2025-08-28T16:00:00\",\n  \"description\": \"Revis\u00e3o pr\u00e1tica\",\n  \"minutesSpent\": 30\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/task-logs/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "task-logs",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar TaskLogs por estudante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/task-logs/student/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "task-logs",
+            "student",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Remover TaskLog",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/task-logs/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "task-logs",
+            "1"
+          ]
+        }
+      }
+    }
+  ]
+}

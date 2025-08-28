@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CourseService {
@@ -22,5 +24,33 @@ public class CourseService {
             throw new IllegalArgumentException("Course must finish within 6 months from start date");
         }
         return repo.save(c);
+    }
+
+    @Transactional
+    public Course update(Long id, Course data) {
+        Course existing = repo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Course not found"));
+
+        if (!existing.getName().equals(data.getName()) && repo.existsByName(data.getName())) {
+            throw new IllegalArgumentException("Course name must be unique");
+        }
+        if (data.getEndDate().isAfter(data.getStartDate().plusMonths(6))) {
+            throw new IllegalArgumentException("Course must finish within 6 months from start date");
+        }
+
+        existing.update(data.getDescription(), data.getStartDate(), data.getEndDate());
+        return repo.save(existing);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!repo.existsById(id)) {
+            throw new NoSuchElementException("Course not found");
+        }
+        repo.deleteById(id);
+    }
+
+    public List<Course> findAll() {
+        return this.repo.findAll();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -28,4 +29,9 @@ public class StudentService {
     private int age(LocalDate birthDate) {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
+
+    public List<Student> findAll() {
+        return this.repo.findAll();
+    }
+
 }

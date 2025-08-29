@@ -3,6 +3,7 @@ package com.danieldomingues.lms.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Table(name = "enrollments",
         uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "course_id"}))
 @Getter
+@Setter
 @NoArgsConstructor
 public class Enrollment {
 
@@ -26,6 +28,11 @@ public class Enrollment {
     private Course course;
 
     private LocalDate enrollmentDate = LocalDate.now();
+
+    @Enumerated(EnumType.STRING)                 // <-- novo
+    @Column(name = "status", nullable = false, length = 16)
+    @Setter                                       // <-- permitir mudança do status
+    private EnrollmentStatus status = EnrollmentStatus.ACTIVE;
 
     public Enrollment(Student student, Course course) {
         this.student = student;

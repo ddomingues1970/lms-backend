@@ -76,20 +76,48 @@ public class SecurityConfig {
 
                 // Autorização por rotas
                 .authorizeHttpRequests(auth -> auth
-                        // Pré-flight do CORS
+                        // Preflight CORS
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Endpoints públicos (ex.: registro/login)
+                        // Públicos (ex.: auth)
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // >>> Cadastro de estudante (público)
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/students").permitAll()
+
+                        // Students (demais operações protegidas)
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/students/**")
+                        .hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/students/**")
+                        .hasAnyRole("ADMIN", "STUDENT") // ajuste aqui se quiser restringir mais
+                        .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/students/**")
+                        .hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/students/**")
+                        .hasRole("ADMIN")
+
+                        // Courses — GET liberado para ADMIN/STUDENT; escrita só ADMIN
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/courses/**")
+                        .hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/courses/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/courses/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/courses/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/courses/**")
+                        .hasRole("ADMIN")
+
+                        // ENROLLMENTS
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/enrollments")
+                        .hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/enrollments/**")
+                        .hasAnyRole("ADMIN", "STUDENT")
+
 
                         // Administração
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // Alunos e afins
-                        .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "STUDENT")
-                        .requestMatchers("/api/courses/**").hasAnyRole("ADMIN", "STUDENT")
-
-                        // Qualquer outra rota precisa estar autenticada
+                        // Qualquer outra rota autenticada
                         .anyRequest().authenticated()
                 )
 

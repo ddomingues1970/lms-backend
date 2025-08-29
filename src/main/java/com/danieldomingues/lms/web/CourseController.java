@@ -3,6 +3,7 @@ package com.danieldomingues.lms.web;
 import com.danieldomingues.lms.domain.Course;
 import com.danieldomingues.lms.service.CourseService;
 import com.danieldomingues.lms.web.dto.CourseCreateDto;
+import com.danieldomingues.lms.web.dto.CourseDto;
 import com.danieldomingues.lms.web.dto.CourseUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +47,11 @@ public class CourseController {
     public ResponseEntity<List<Course>> listAll() {
         return ResponseEntity.ok(service.findAll());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseDto> getById(@PathVariable Long id) {
+        CourseDto dto = service.getById(id); // lança 404 se não existir
+        return ResponseEntity.ok(dto);
+    }
+
 }

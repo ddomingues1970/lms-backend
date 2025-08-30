@@ -1,11 +1,14 @@
 package com.danieldomingues.lms.service;
 
 import com.danieldomingues.lms.domain.Course;
+import com.danieldomingues.lms.mapper.CourseMapper;
 import com.danieldomingues.lms.repository.CourseRepository;
+import com.danieldomingues.lms.web.dto.CourseDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -52,5 +55,11 @@ public class CourseService {
 
     public List<Course> findAll() {
         return this.repo.findAll();
+    }
+
+    public CourseDto getById(Long id) {
+        Course entity = repo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
+        return CourseMapper.toDTO(entity); // adapte para seu mapper/DTO
     }
 }
